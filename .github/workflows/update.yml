@@ -25,4 +25,4 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
           EIPA_DYNAMIC_URL: ${{ secrets.EIPA_DYNAMIC_URL }}
-        run: python update_stations.py
+        run: python update_station.py
