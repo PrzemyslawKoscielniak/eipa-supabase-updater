@@ -39,7 +39,7 @@ except Exception as e:
     exit(1)
 
 print("Pobieranie ID stacji z bazy Supabase...")
-db_response = supabase.table('fast_stations').select('point_id').execute()
+db_response = supabase.table('charging_stations').select('point_id').execute()
 our_stations = db_response.data
 
 print("Rozpoczynam aktualizację statusów w bazie...")
@@ -55,7 +55,7 @@ updated_count = 0
 for station in our_stations:
     p_id = station['point_id']
     is_available = available_points.get(p_id, False)
-    supabase.table('fast_stations').update({'is_available': is_available}).eq('point_id', p_id).execute()
+    supabase.table('charging_stations').update({'is_available': is_available}).eq('point_id', p_id).execute()
     updated_count += 1
 
 print(f"Zakończono sukcesem! Zaktualizowano {updated_count} stacji na mapie.")
