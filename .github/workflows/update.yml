@@ -1,0 +1,28 @@
+name: Aktualizacja Mapy Ładowarek
+
+on:
+  schedule:
+    - cron: '*/15 * * * *' # Uruchamiaj co 15 minut
+  workflow_dispatch: # Pozwala na ręczne wymuszenie startu guzikiem
+
+jobs:
+  update-database:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pobranie kodu
+        uses: actions/checkout@v3
+
+      - name: Konfiguracja Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Instalacja bibliotek
+        run: pip install requests supabase
+
+      - name: Odpalenie skryptu aktualizującego
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          EIPA_DYNAMIC_URL: ${{ secrets.EIPA_DYNAMIC_URL }}
+        run: python update_stations.py
