@@ -1,0 +1,28 @@
+name: Cotygodniowa aktualizacja bazy stacji (Sobota 3:00)
+
+on:
+  schedule:
+    # 0 minut, 3 godzina, dowolny dzień miesiąca, dowolny miesiąc, 6-ty dzień tygodnia (Sobota)
+    - cron: '0 3 * * 6'
+  workflow_dispatch: # Pozwala Ci odpalić to ręcznie w dowolnym momencie
+
+jobs:
+  update-stations:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pobieranie kodu
+        uses: actions/checkout@v4
+
+      - name: Instalacja Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Instalacja bibliotek
+        run: pip install requests supabase
+
+      - name: Uruchomienie aktualizacji bazy
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: python update_eipa_database.py
